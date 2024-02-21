@@ -1,16 +1,7 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const AuthGuard = ({ children, requireAuth = true }) => {
-    const isAuthenticated = Boolean(localStorage.getItem("token"));
-
-    if (requireAuth && !isAuthenticated) {
-        return <Navigate to="/signIn" replace />;
-    } else if (!requireAuth && isAuthenticated) {
-        return <Navigate to="/user" replace />;
-    }
-
-    return children;
-};
-
-export default AuthGuard;
+export default function AuthGuard() {
+    const token = useSelector((state) => state.user.value.token);
+    return token ? <Outlet /> : <Navigate to="/login" />;
+}

@@ -21,14 +21,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signIn" element={
-            <AuthGuard requireAuth={false}>
               <Login />
-            </AuthGuard>
+        
           } />
            <Route path="/user" element={
-            <AuthGuard requireAuth={true}>
               <User />
-            </AuthGuard>
+          
           } />
           <Route path="*" element={<Error404 />} />
         </Routes>
