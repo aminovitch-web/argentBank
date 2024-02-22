@@ -22,7 +22,7 @@ export default function Login() {
       dispatch(login({ username: inputUsername, body: response.body }));
       navigate('/user');
     } catch (error) {
-      setErrorMessage('Combinaisons email / mot de passe incorrectes'); 
+      setErrorMessage('Combinaison email / mot de passe incorrectes'); 
     }
   };
 

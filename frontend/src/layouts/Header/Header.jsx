@@ -30,10 +30,10 @@ export default function Header() {
       <div>
         {username ? (
           <>
-            <span className="main-nav-item">
+            <NavLink className="main-nav-item" to="/user">
               <i className="fa fa-user-circle"></i>
               {firstName}
-            </span>
+            </NavLink>
             <NavLink className="main-nav-item" to="/" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i> Sign Out
             </NavLink>
@@ -47,4 +47,3 @@ export default function Header() {
     </nav>
   );
 }
-

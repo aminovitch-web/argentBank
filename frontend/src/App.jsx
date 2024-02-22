@@ -6,9 +6,8 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login'; 
 import User from './pages/User/User';
-import Error404 from './pages/Error404/Error404';
-import AuthGuard from   './components/AuthGuard/AuthGuard';
-
+import AuthGuard from './components/AuthGuard/AuthGuard'; 
+import SignInGuard from './components/SignInGuard/SignInGuard'; 
 
 function App() {
   const location = useLocation();
@@ -18,17 +17,15 @@ function App() {
     <>
       <Header />
       <main className={mainClass}>
-        <Routes>
+      <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signIn" element={
-              <Login />
-        
-          } />
-           <Route path="/user" element={
-              <User />
-          
-          } />
-          <Route path="*" element={<Error404 />} />
+          <Route element={<SignInGuard />}> 
+            <Route path="/signIn" element={<Login />} />
+          </Route>
+          <Route element={<AuthGuard />}>
+            <Route path="/user" element={<User />} />
+          </Route>
+          <Route path="*" element={<Home />} />
         </Routes>
       </main>
       <Footer />
@@ -37,3 +34,4 @@ function App() {
 }
 
 export default App;
+
