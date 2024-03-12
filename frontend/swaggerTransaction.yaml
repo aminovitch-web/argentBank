@@ -1,0 +1,171 @@
+openapi: 3.0.0
+info:
+  title: Argent Bank Transactions API
+  description: API pour gérer les transactions bancaires des utilisateurs
+  version: 1.0.0
+servers:
+  - url: "https://api.argentbank.com/v1"
+paths:
+  /transactions/account/{accountId}/{month}:
+    get:
+      summary: Liste des transactions pour un mois spécifié, groupées par compte
+      tags:
+        - Transactions
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID du compte pour lequel les transactions sont demandées.
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}$'
+            example: '2023-01'
+          description: Le mois pour lequel les transactions sont demandées, au format AAAA-MM.
+      responses:
+        "200":
+          description: Liste des transactions retournée avec succès pour le mois donné.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "404":
+          description: Compte ou mois non trouvé.
+  /transactions:
+    post:
+      summary: Ajouter une nouvelle transaction
+      tags:
+        - Transactions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTransaction"
+      responses:
+        "201":
+          description: Transaction créée
+  /transactions/{transactionId}:
+    get:
+      summary: Détails d'une transaction spécifique
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la transaction
+      responses:
+        "200":
+          description: Détails de la transaction retournés avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetail"
+        "404":
+          description: Transaction non trouvée
+    put:
+      summary: Modifier une transaction existante
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la transaction à modifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionUpdate"
+      responses:
+        "200":
+          description: Transaction mise à jour
+    delete:
+      summary: Supprimer une transaction
+      tags:
+        - Transactions
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID de la transaction à supprimer
+      responses:
+        "204":
+          description: Transaction supprimée
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+        type:
+          type: string
+        accountId:
+          type: string
+    TransactionDetail:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+        type:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        accountId:
+          type: string
+    NewTransaction:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: float
+        type:
+          type: string
+        accountId:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+    TransactionUpdate:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: float
+        description:
+          type: string
+        category:
+          type: string
